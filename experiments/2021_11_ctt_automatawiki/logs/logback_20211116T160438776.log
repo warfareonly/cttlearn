@@ -1,0 +1,27 @@
+2021-11-16 16:04:38 INFO Benchmarking |ClosingStrategy: CloseFirst
+2021-11-16 16:04:38 INFO Benchmarking |ObservationTableCEXHandler: RivestSchapire
+2021-11-16 16:04:38 INFO Benchmarking |SUL name: GnuTLS_3.3.12_client_full.dot
+2021-11-16 16:04:38 INFO Benchmarking |SUL dir: /mnt/c/Users/damas/GitHub/cttlearn/experiments/2021_11_ctt_automatawiki/./benchmarks/TLS/GnuTLS_3.3.12_client_full.dot
+2021-11-16 16:04:38 INFO Benchmarking |Output dir: ./benchmarks/TLS
+2021-11-16 16:04:38 INFO Benchmarking |Seed: 1637075078674
+2021-11-16 16:04:38 INFO Benchmarking |Cache: N
+2021-11-16 16:04:38 INFO Benchmarking |EquivalenceOracle: WMethodQsizeEQOracle(2)
+2021-11-16 16:04:38 INFO Benchmarking |Method: L*M
+2021-11-16 16:04:38 INFO Experiment |Starting round 1
+2021-11-16 16:04:38 INFO Experiment |Learning
+2021-11-16 16:04:38 INFO Experiment |Searching for counterexample
+2021-11-16 16:04:38 INFO Experiment |ServerHelloRSA ServerCertificate CertificateRequest ApplicationDataEmpty
+2021-11-16 16:04:38 INFO Experiment |Starting round 2
+2021-11-16 16:04:38 INFO Experiment |Learning
+2021-11-16 16:04:38 INFO Experiment |Searching for counterexample
+2021-11-16 16:04:39 INFO Benchmarking |Rounds: 2
+2021-11-16 16:04:39 INFO Benchmarking |MQ [Resets]: 1529
+2021-11-16 16:04:39 INFO Benchmarking |MQ [Symbols]: 6016
+2021-11-16 16:04:39 INFO Benchmarking |EQ [Resets]: 148498
+2021-11-16 16:04:39 INFO Benchmarking |EQ [Symbols]: 865876
+2021-11-16 16:04:39 INFO SimpleProfiler |Learning [ms]: 11
+2021-11-16 16:04:39 INFO SimpleProfiler |Searching for counterexample [ms]: 164
+2021-11-16 16:04:39 INFO Benchmarking |Qsize: 9
+2021-11-16 16:04:39 INFO Benchmarking |Isize: 12
+2021-11-16 16:04:39 INFO Benchmarking |Equivalent: OK
+2021-11-16 16:04:39 INFO Benchmarking |Info: N/A
