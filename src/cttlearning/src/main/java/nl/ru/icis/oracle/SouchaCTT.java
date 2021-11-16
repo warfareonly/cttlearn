@@ -112,7 +112,7 @@ public class SouchaCTT<I, O> implements MealyEquivalenceOracle<I, O> {
 		}
 
 		try {          
-			Process process = Runtime.getRuntime().exec("wsl ./bin/FSMlib -m "+this.conformanceTesting+" -es "+this.extraStates);
+			Process process = Runtime.getRuntime().exec("./bin/FSMlib -m "+this.conformanceTesting+" -es "+this.extraStates);
 			BufferedReader proc_in  = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			BufferedWriter proc_out = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
 			
