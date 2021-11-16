@@ -1,0 +1,23 @@
+2021-11-16 15:43:59 INFO Benchmarking |ClosingStrategy: CloseFirst
+2021-11-16 15:43:59 INFO Benchmarking |ObservationTableCEXHandler: RivestSchapire
+2021-11-16 15:43:59 INFO Benchmarking |SUL name: learnresult_fix.dot
+2021-11-16 15:43:59 INFO Benchmarking |SUL dir: C:\Users\damas\GitHub\cttlearn\src\cttlearning\..\..\experiments\2021_11_ctt_automatawiki\benchmarks\Bankcard\learnresult_fix.dot
+2021-11-16 15:43:59 INFO Benchmarking |Output dir: ..\..\experiments\2021_11_ctt_automatawiki\benchmarks\Bankcard
+2021-11-16 15:43:59 INFO Benchmarking |Seed: 1637073839386
+2021-11-16 15:43:59 INFO Benchmarking |Cache: N
+2021-11-16 15:43:59 INFO Benchmarking |EquivalenceOracle: WMethodQsizeEQOracle(0)
+2021-11-16 15:43:59 INFO Benchmarking |Method: L*M
+2021-11-16 15:43:59 INFO Experiment |Starting round 1
+2021-11-16 15:43:59 INFO Experiment |Learning
+2021-11-16 15:43:59 INFO Experiment |Searching for counterexample
+2021-11-16 15:43:59 INFO Benchmarking |Rounds: 1
+2021-11-16 15:43:59 INFO Benchmarking |MQ [Resets]: 2175
+2021-11-16 15:43:59 INFO Benchmarking |MQ [Symbols]: 9480
+2021-11-16 15:43:59 INFO Benchmarking |EQ [Resets]: 540
+2021-11-16 15:43:59 INFO Benchmarking |EQ [Symbols]: 2400
+2021-11-16 15:43:59 INFO SimpleProfiler |Learning [ms]: 10
+2021-11-16 15:43:59 INFO SimpleProfiler |Searching for counterexample [ms]: 24
+2021-11-16 15:43:59 INFO Benchmarking |Qsize: 9
+2021-11-16 15:43:59 INFO Benchmarking |Isize: 15
+2021-11-16 15:43:59 INFO Benchmarking |Equivalent: OK
+2021-11-16 15:43:59 INFO Benchmarking |Info: N/A
