@@ -213,9 +213,6 @@ public class Benchmarking {
 
 			MealyMachine finalHyp = (MealyMachine) experiment.getFinalHypothesis();
 			
-			GraphDOT.write(finalHyp, mealyss.getInputAlphabet(),System.err);
-			
-			
 			logger.logConfig("Qsize: "+mealyss.getStates().size());
 			logger.logConfig("Isize: "+mealyss.getInputAlphabet().size());
 
