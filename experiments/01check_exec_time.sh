@@ -1,11 +1,16 @@
 #!/bin/sh
 
-PARSER="python3.7 ../../src/dot2soucha_parser/dot2soucha.py"
+PARSER="python3 ../src/dot2soucha_parser/dot2soucha.py"
 CTT=spy
-EXTRA_STATES=0
+EXTRA_STATES=3
+MODEL_DIR="../data/2021_11_ctt_automatawiki"
+EXEC_DIR="../src"
 
-$PARSER -f "./benchmarks/CoffeeMachine/coffeemachine.dot"           | ./bin/FSMlib -m $CTT -es $EXTRA_STATES >/dev/null
+# CoffeeMachine is not present!
+# echo "${MODEL_DIR}/CoffeeMachine/coffeemachine.dot"
+$PARSER -f "${MODEL_DIR}/QUICprotocol/QUICprotocolwith0RTT.dot"           | ${EXEC_DIR}/fsm_lib -m $CTT -es $EXTRA_STATES >/dev/null
 
+exit 0
 $PARSER -f "./benchmarks/QUICprotocol/QUICprotocolwith0RTT.dot"     | ./bin/FSMlib -m $CTT -es $EXTRA_STATES >/dev/null
 $PARSER -f "./benchmarks/QUICprotocol/QUICprotocolwithout0RTT.dot"  | ./bin/FSMlib -m $CTT -es $EXTRA_STATES >/dev/null
 
