@@ -1,0 +1,4 @@
+[submodule "src/FSMlib"]
+	path = src/FSMlib
+	url = https://github.com/warfareonly/FSMlib.git
+	branch = testing_methods
