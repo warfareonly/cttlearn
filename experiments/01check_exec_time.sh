@@ -13,7 +13,7 @@ for EXTRA_STATES in 0 1 2 3; do
         for SUL in  Bankcard DTLS MQTT QUICprotocol SSH TCP TLS; do 
             for F_DOT in "${MODEL_DIR}/$SUL"/*.dot; do 
                 echo "fsm_model:\t${F_DOT}" >> $A_LOG
-                $PARSER -f "${F_DOT}" | $FSMLIB -m $CTT -es $EXTRA_STATES 2>> $A_LOG > /dev/null
+                $PARSER -f "${F_DOT}" | $FSMLIB -m $CTT -es $EXTRA_STATES -debug 2>> $A_LOG > /dev/null
             done
         done
     done
