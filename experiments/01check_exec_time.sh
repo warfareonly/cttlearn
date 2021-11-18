@@ -9,9 +9,9 @@ rm -f $A_LOG
 echo "FSM\tCTT\tEXTRA_STATES\tEXEC_TIME" > $A_LOG 
 
 for EXTRA_STATES in 0 1 2 3; do
-    for CTT in soucha_w soucha_wp soucha_h soucha_hsi soucha_spy soucha_spyh; do
+    for CTT in w wp h hsi spy spyh; do
 # for EXTRA_STATES in 0; do
-#     for CTT in soucha_w soucha_hsi soucha_spy; do
+#     for CTT in w hsi spy; do
     for SUL in  Bankcard DTLS MQTT QUICprotocol SSH TCP TLS; do 
             for F_DOT in "${MODEL_DIR}/$SUL"/*.dot; do 
                 start=`date +%s.%N`
