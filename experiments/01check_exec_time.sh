@@ -15,7 +15,7 @@ for EXTRA_STATES in 0 1 2 3; do
     for SUL in  Bankcard DTLS MQTT QUICprotocol SSH TCP TLS; do 
             for F_DOT in "${MODEL_DIR}/$SUL"/*.dot; do 
                 start=`date +%s.%N`
-                $PARSER -f "${F_DOT}" | $FSMLIB -m $CTT -es $EXTRA_STATES 2>&1 /dev/null
+                $PARSER -f "${F_DOT}" | $FSMLIB -m $CTT -es $EXTRA_STATES > /dev/null
                 end=`date +%s.%N`
                 runtime=$( echo "$end - $start" | bc -l )
                 echo "${F_DOT}\t${CTT}\t${EXTRA_STATES}\t${runtime}" >> $A_LOG 
