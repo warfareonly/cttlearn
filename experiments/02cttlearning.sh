@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CTT_LEARNING="java -jar ../src/benchmark.jar"
+CTT_LEARNING="java -jar ../src/benchmark.jar -cache"
 MODEL_DIR="../data/2021_11_ctt_automatawiki"
 MAX_PROCS=7
 
@@ -55,7 +55,7 @@ for EXTRA_STATES in 0 1 2 3; do
         echo $CTT_LEARNING -eq $ctt -es $EXTRA_STATES -sul "${MODEL_DIR}/DTLS/wolfssl-4.0.0_psk.dot"
         # echo $CTT_LEARNING -eq $ctt -es $EXTRA_STATES -sul "${MODEL_DIR}/FromRhapsodyToDezyne/model1.dot"
         # echo $CTT_LEARNING -eq $ctt -es $EXTRA_STATES -sul "${MODEL_DIR}/FromRhapsodyToDezyne/model2.dot"
-        # echo $CTT_LEARNING -eq $ctt -es $EXTRA_STATES -sul "${MODEL_DIR}/FromRhapsodyToDezyne/model3.dot" 
+        # echo $CTT_LEARNING -eq $ctt -es $EXTRA_STATES -sul "${MODEL_DIR}/FromRhapsodyToDezyne/model3.dot"
         echo $CTT_LEARNING -eq $ctt -es $EXTRA_STATES -sul "${MODEL_DIR}/FromRhapsodyToDezyne/model4.dot"
         echo $CTT_LEARNING -eq $ctt -es $EXTRA_STATES -sul "${MODEL_DIR}/MQTT/ActiveMQ__invalid.dot"
         echo $CTT_LEARNING -eq $ctt -es $EXTRA_STATES -sul "${MODEL_DIR}/MQTT/ActiveMQ__non_clean.dot"

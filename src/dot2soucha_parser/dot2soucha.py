@@ -15,14 +15,13 @@ import networkx as nx
 AUTOMATA_WIKI_S0 = '__start0'
 DEFAULT_LABEL_REGEX = '([^\/]+)\/([^\/]+)'
 
-def mk_soucha_dict(fsm, c_s0  = None, c_re = None):
-    if c_s0 is None: c_s0 = AUTOMATA_WIKI_S0
+def mk_soucha_dict(fsm, c_re = None):
     if c_re is None: c_re = DEFAULT_LABEL_REGEX
 
     io_pattern = re.compile(c_re)
 
     soucha_dict = dict()
-    soucha_dict["s0"] = None
+    soucha_dict["__start0"] = None
     soucha_dict["symbol_in"] = {}
     soucha_dict["symbol_out"] = {}
     soucha_dict["states"] = {}
@@ -37,16 +36,16 @@ def mk_soucha_dict(fsm, c_s0  = None, c_re = None):
 
         if si == AUTOMATA_WIKI_S0:  # si == '__start0', where __start0 -> s0
             _s0 = list(fsm.successors(AUTOMATA_WIKI_S0))
-            soucha_dict["s0"] = _s0[0]
+            soucha_dict["__start0"] = _s0[0]
             continue
-        # elif si == c_s0: # si == '__start0', where __start0 -> s0
-        #     soucha_dict["s0"] = si
 
-        if not 'label' in si_dict.keys(): continue
-        if si_dict['label'] in [None, '']: continue
+        # if node label is missing/NoneType/Empty string then set node id as label
+        if not 'label' in si_dict.keys(): si_dict['label'] = si
+        if si_dict['label'] in [None, '']: si_dict['label'] = si
 
-        if soucha_dict["s0"] is None:
-            soucha_dict["s0"] = si
+        # set the first node from the list, if there is no '__start0' node
+        # where __start0 -> s0 (as conventioned in the Automata wiki)
+        if soucha_dict["__start0"] is None: soucha_dict["__start0"] = si
 
         soucha_dict["index_state"][len(soucha_dict["states"])] = si
         soucha_dict["states"][si] = {"raw_label": si_dict['label'],
@@ -123,7 +122,7 @@ if __name__ == '__main__':
         if VERBOSE: print(f'Reading dot file: {in_file.name}', file=sys.stderr)
         f_dot = nx.nx_agraph.read_dot(in_file)
 
-        soucha_dict = mk_soucha_dict(f_dot, c_s0=custom_s0, c_re = custom_regex)
+        soucha_dict = mk_soucha_dict(f_dot, c_re = custom_regex)
         if SHOW_DICT:
             import pprint
             pprint.pprint(soucha_dict, stream=sys.stderr)
@@ -156,9 +155,9 @@ if __name__ == '__main__':
         # - all values are separated by a space
         # Output functions: (depends on the machine type)
         #  n lines: state <output on the transition for each input>(p values)
-        list_states = [soucha_dict['states'][soucha_dict['s0']]['soucha_index']]
+        list_states = [soucha_dict['states'][soucha_dict["__start0"]]['soucha_index']]
         for si in soucha_dict['states'].keys():
-            if si == soucha_dict['s0']: continue
+            if si == soucha_dict["__start0"]: continue
             list_states.append(soucha_dict['states'][si]['soucha_index'])
         for idx_si in list_states:
             print(idx_si, end='')
