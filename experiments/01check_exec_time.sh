@@ -3,7 +3,7 @@
 PARSER="python3 ../src/dot2soucha_parser/dot2soucha.py"
 MODEL_DIR="../data/2021_11_ctt_automatawiki"
 FSMLIB="../src/fsm_lib"
-A_LOG="stats.log"
+A_LOG="./stats.log"
 
 rm -f $A_LOG
 echo "FSM\tCTT\tEXTRA_STATES\tEXEC_TIME" > $A_LOG 
