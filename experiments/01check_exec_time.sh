@@ -9,7 +9,7 @@ for EXTRA_STATES in 0 1 2 3; do
 # for EXTRA_STATES in 0; do
 #     for CTT in soucha_w soucha_hsi soucha_spy; do
         A_LOG="stats_${CTT}_es${EXTRA_STATES}.log"
-        rm $A_LOG
+        rm -f $A_LOG
         for SUL in  Bankcard DTLS MQTT QUICprotocol SSH TCP TLS; do 
             for F_DOT in "${MODEL_DIR}/$SUL"/*.dot; do 
                 echo "fsm_model:\t${F_DOT}" >> $A_LOG
