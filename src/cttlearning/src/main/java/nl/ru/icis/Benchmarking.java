@@ -113,11 +113,6 @@ public class Benchmarking {
 			if(!line.hasOption(SUL)) throw new IllegalArgumentException("must provide a SUL");
 			File sul = new File(line.getOptionValue(SUL));
 
-			// set output dir
-			//File out_dir = sul.getParentFile();
-			//if(line.hasOption(OUT)) out_dir = new File(line.getOptionValue(OUT));
-			//if(!out_dir.exists())    out_dir.mkdirs();
-			
 			// create log
 			LearnLogger logger = LearnLogger.getLogger(Benchmarking.class);
 
@@ -135,8 +130,7 @@ public class Benchmarking {
 			
 			logger.logEvent("SUL name: "+sul.getName());
 			logger.logEvent("SUL dir: "+sul.getAbsolutePath());
-			//logger.logEvent("Output dir: "+out_dir);
-			
+						
 			// set seed from CLI parameter, if passed
 			if(line.hasOption(SEED))  tstamp = Long.valueOf(line.getOptionValue(SEED));
 			rnd_seed.setSeed(tstamp);
@@ -375,6 +369,6 @@ public class Benchmarking {
 		options.addOption( INFO, true, "Add extra information as string");
 		return options;
 	}
-	
+
 }
 
