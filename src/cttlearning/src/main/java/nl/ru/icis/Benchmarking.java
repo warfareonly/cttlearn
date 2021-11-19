@@ -166,7 +166,7 @@ public class Benchmarking {
 			if(line.hasOption(EQ)) ctt_name = line.getOptionValue(EQ).toLowerCase();
 			
 			MembershipOracle<String, String>       mqOracle = new SULOracle(mq_sul);
-			EquivalenceOracle<MealyMachine<?, String, ?, String>, String, Word<String>> eqOracle = buildEqOracle(rnd_seed, ctt_name, extra_states, logger, mealyss,eq_sul);
+			EquivalenceOracle<MealyMachine<?, String, ?, String>, String, Word<String>> eqOracle = buildEqOracle(rnd_seed, ctt_name, extra_states, logger, eq_sul);
 
 			/////////////////////////////
 			// Setup experiment object //
@@ -236,7 +236,7 @@ public class Benchmarking {
 
 
 	private static EquivalenceOracle<MealyMachine<?, String, ?, String>, String, Word<String>> buildEqOracle(
-			Random rnd_seed, String ctt_name, int extra_states, LearnLogger logger, CompactMealy<String, String> mealyss,
+			Random rnd_seed, String ctt_name, int extra_states, LearnLogger logger, 
 			SUL<String, String> eq_sul) {
 		MealyMembershipOracle<String,String> oracleForEQoracle = new SULOracle(eq_sul);
 		
@@ -244,27 +244,27 @@ public class Benchmarking {
 		EquivalenceOracle<MealyMachine<?, String, ?, String>, String, Word<String>> eqOracle;
 		switch (ctt_name) {
 		case "soucha_wp":
-			eqOracle = new SouchaCTT(eq_sul,"wp", extra_states);
+			eqOracle = new SouchaCTT(oracleForEQoracle,"wp", extra_states);
 			logger.logEvent("EquivalenceOracle: SouchaCTT(wp,"+extra_states+")");
 			break;
 		case "soucha_h":
-			eqOracle = new SouchaCTT(eq_sul,"h",extra_states);
+			eqOracle = new SouchaCTT(oracleForEQoracle,"h",extra_states);
 			logger.logEvent("EquivalenceOracle: SouchaCTT(h,"+extra_states+")");
 			break;
 		case "soucha_hsi":
-			eqOracle = new SouchaCTT(eq_sul,"hsi",extra_states);
+			eqOracle = new SouchaCTT(oracleForEQoracle,"hsi",extra_states);
 			logger.logEvent("EquivalenceOracle: SouchaCTT(hsi,"+extra_states+")");
 			break;
 		case "soucha_spy":
-			eqOracle = new SouchaCTT(eq_sul,"spy",extra_states);
+			eqOracle = new SouchaCTT(oracleForEQoracle,"spy",extra_states);
 			logger.logEvent("EquivalenceOracle: SouchaCTT(spy,"+extra_states+")");
 			break;
 		case "soucha_spyh":
-			eqOracle = new SouchaCTT(eq_sul,"spyh",extra_states);
+			eqOracle = new SouchaCTT(oracleForEQoracle,"spyh",extra_states);
 			logger.logEvent("EquivalenceOracle: SouchaCTT(spyh,"+extra_states+")");
 			break;
 		case "soucha_w":
-			eqOracle = new SouchaCTT(eq_sul,"w",extra_states);
+			eqOracle = new SouchaCTT(oracleForEQoracle,"w",extra_states);
 			logger.logEvent("EquivalenceOracle: SouchaCTT(w,"+extra_states+")");
 			break;
 		default:

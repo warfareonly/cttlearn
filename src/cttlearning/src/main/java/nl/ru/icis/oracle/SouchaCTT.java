@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import de.learnlib.api.SUL;
 import de.learnlib.api.logging.LearnLogger;
 import de.learnlib.api.oracle.EquivalenceOracle.MealyEquivalenceOracle;
+import de.learnlib.api.oracle.MembershipOracle.MealyMembershipOracle;
 import de.learnlib.api.query.DefaultQuery;
 import net.automatalib.automata.transducers.MealyMachine;
 import net.automatalib.automata.transducers.impl.compact.CompactMealy;
@@ -52,7 +53,7 @@ public class SouchaCTT<I, O> implements MealyEquivalenceOracle<I, O> {
 	/**
 	 * System under learning.
 	 */
-	private final SUL<I, O> sul;
+	private final MealyMembershipOracle<I, O> sul;
 
 	/**
 	 * Number of extra states.
@@ -75,7 +76,7 @@ public class SouchaCTT<I, O> implements MealyEquivalenceOracle<I, O> {
 	public static final Pattern PATTERN_TC = Pattern.compile(REGEX_TC);
 	public static final Pattern PATTERN_EXECTIME = Pattern.compile(REGEX_EXECTIME);
 
-	public SouchaCTT(SUL<I, O> sul, String ctt_name, int extra_states) {
+	public SouchaCTT(MealyMembershipOracle<I, O> sul, String ctt_name, int extra_states) {
 		this.sul = sul;
 		this.conformanceTesting = ctt_name;
 		this.extraStates = extra_states;
@@ -83,7 +84,7 @@ public class SouchaCTT<I, O> implements MealyEquivalenceOracle<I, O> {
 		LOGGER.logEvent("EquivalenceOracle: SouchaCTT: {Technique=" + this.conformanceTesting + ";ExtraStates=" + this.extraStates + ";}");
 	}
 
-	public SouchaCTT(SUL<I, O> sul) {
+	public SouchaCTT(MealyMembershipOracle<I, O> sul) {
 		this(sul, "w", 0);
 	}
 
@@ -116,37 +117,20 @@ public class SouchaCTT<I, O> implements MealyEquivalenceOracle<I, O> {
 
 			String tc_line = null;
 
-			WordBuilder<I> wbIn = new WordBuilder<>();
-			WordBuilder<O> wbOut = new WordBuilder<>();
 			while ((tc_line = proc_in.readLine()) != null) {
 				if (tc_line.isBlank() || tc_line.isEmpty()) {
 					continue;
 				}
-				// restart!
-				sul.pre();
-				wbIn.clear();
-				wbOut.clear();
-				S cur = hypothesis.getInitialState();
-
 				Word<I> test_case = stringToWord(tc_line, inputs);
-				for (I in : test_case) {
-					// step
-					O outSul = sul.step(in);
-					O outHyp = hypothesis.getOutput(cur, in);
-
-					wbIn.add(in);
-					wbOut.add(outSul);
-
-					// ce?
-					if (!outSul.equals(outHyp)) {
-						DefaultQuery<I, Word<O>> ce = new DefaultQuery<>(wbIn.toWord());
-						ce.answer(wbOut.toWord());
-						proc_in.close();
-						return ce;
-					}
-					cur = hypothesis.getSuccessor(cur, in);
+				Word<O> outSul = sul.answerQuery(test_case);
+				Word<O> outHyp = hypothesis.computeOutput(test_case);
+				
+				if (!outSul.equals(outHyp)) {
+					DefaultQuery<I, Word<O>> ce = new DefaultQuery<>(test_case);
+					ce.answer(outSul);
+					proc_in.close();
+					return ce;
 				}
-				sul.post();
 			}
 			proc_in.close();
 		} catch (IOException e) {
