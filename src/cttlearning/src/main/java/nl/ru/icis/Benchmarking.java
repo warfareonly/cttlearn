@@ -114,9 +114,9 @@ public class Benchmarking {
 			File sul = new File(line.getOptionValue(SUL));
 
 			// set output dir
-			File out_dir = sul.getParentFile();
-			if(line.hasOption(OUT)) out_dir = new File(line.getOptionValue(OUT));
-			if(!out_dir.exists())    out_dir.mkdirs();
+			//File out_dir = sul.getParentFile();
+			//if(line.hasOption(OUT)) out_dir = new File(line.getOptionValue(OUT));
+			//if(!out_dir.exists())    out_dir.mkdirs();
 			
 			// create log
 			LearnLogger logger = LearnLogger.getLogger(Benchmarking.class);
@@ -135,7 +135,7 @@ public class Benchmarking {
 			
 			logger.logEvent("SUL name: "+sul.getName());
 			logger.logEvent("SUL dir: "+sul.getAbsolutePath());
-			logger.logEvent("Output dir: "+out_dir);
+			//logger.logEvent("Output dir: "+out_dir);
 			
 			// set seed from CLI parameter, if passed
 			if(line.hasOption(SEED))  tstamp = Long.valueOf(line.getOptionValue(SEED));
@@ -364,7 +364,7 @@ public class Benchmarking {
 		options.addOption( SOT,  false, "Save observation table (OT)" );
 		options.addOption( HELP, false, "Shows help" );
 		options.addOption( SUL,  true, "System Under Learning (SUL)" );
-		options.addOption( OUT,  true, "Set output directory" );
+		//options.addOption( OUT,  true, "Set output directory" );
 		options.addOption( CLOS, true, "Set closing strategy."                       + "\nOptions: {"+String.join(", ", closingStrategiesAvailable)+"}");
 		options.addOption( EQ, 	 true, "Set equivalence query generator."            + "\nOptions: {"+String.join(", ", eqMethodsAvailable)+"}");
 		options.addOption( CEXH, true, "Set counter example (CE) processing method." + "\nOptions: {"+String.join(", ", cexHandlersAvailable)+"}");
@@ -375,17 +375,6 @@ public class Benchmarking {
 		options.addOption( INFO, true, "Add extra information as string");
 		return options;
 	}
-
-
-	private static LearnLogger createLogfile(File out_dir, String filename) throws SecurityException, IOException {
-		File filelog = new File(out_dir,filename);
-		FileHandler fh = new FileHandler(filelog.getAbsolutePath());
-		fh.setFormatter(new SimpleFormatter());
-		LearnLogger logger;
-		logger = LearnLogger.getLogger(SimpleProfiler.class);
-//		logger = LearnLogger.getLogger(Experiment.class);		
-		return logger;
-
-	}
+	
 }
 
