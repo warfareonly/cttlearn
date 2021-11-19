@@ -3,12 +3,13 @@
 PARSER="python3 ../src/dot2soucha_parser/dot2soucha.py"
 MODEL_DIR="../data/2021_11_ctt_automatawiki"
 FSMLIB="../src/fsm_lib"
-A_LOG="./stats.log"
+A_LOG="./results/01ctt_statistics.log"
 
+mkdir -p ./results/
 rm -f $A_LOG
 echo "FSM\tCTT\tEXTRA_STATES\tTOT_RESETS\tTOT_SYMBOLS\tEXEC_TIME" > $A_LOG 
 
-for EXTRA_STATES in 0 1 2 3; do
+for EXTRA_STATES in 0 1 2 ; do
     for CTT in w wp h hsi spy spyh; do
 # for EXTRA_STATES in 0; do
 #     for CTT in w hsi spy; do
