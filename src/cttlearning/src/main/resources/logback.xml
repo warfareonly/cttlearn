@@ -10,7 +10,7 @@
 	</appender>
  
 	# File appender
-	<timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmssSSS"/>
+	<timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmssSSS" timeReference="contextBirth"/>
 	<appender name="fout" class="ch.qos.logback.core.FileAppender">
 		# Name of a log file
 		<file>${logdir:-logs}/${logname:-logback}_${logtstamp:-${bySecond}}.log</file>
