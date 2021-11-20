@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PARSER="python3 ../src/dot2soucha_parser/dot2soucha.py"
-MODEL_DIR="../data/2021_11_ctt_automatawiki"
+MODEL_DIR="../data/automata_wiki/benchmarks"
 FSMLIB="../src/fsm_lib"
 A_LOG="./results/01ctt_statistics.log"
 

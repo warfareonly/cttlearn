@@ -1,7 +1,7 @@
 #!/bin/sh
 
 CTT_LEARNING="java -jar ../src/benchmark.jar -cache -cexh RivestSchapire -clos CloseFirst -learn lstar"
-MODEL_DIR="../data/2021_11_ctt_automatawiki"
+MODEL_DIR="../data/automata_wiki/benchmarks"
 MAX_PROCS=7
 TIMEOUT=30m
 
