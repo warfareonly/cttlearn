@@ -2,7 +2,3 @@
 	path = src/FSMlib
 	url = https://github.com/damascenodiego/FSMlib.git
 	branch = testing_methods
-[submodule "data/automata_wiki"]
-	path = data/automata_wiki
-	url = https://github.com/damascenodiego/automatawiki.git
-	branch = main
