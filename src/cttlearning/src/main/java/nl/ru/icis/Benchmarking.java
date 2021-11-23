@@ -37,6 +37,7 @@ import de.learnlib.filter.cache.sul.SULCache;
 import de.learnlib.filter.statistic.sul.ResetCounterSUL;
 import de.learnlib.filter.statistic.sul.SymbolCounterSUL;
 import de.learnlib.oracle.equivalence.WMethodEQOracle;
+import de.learnlib.oracle.equivalence.WpMethodEQOracle;
 import de.learnlib.oracle.membership.SULOracle;
 import de.learnlib.util.Experiment.MealyExperiment;
 import de.learnlib.util.statistics.SimpleProfiler;
@@ -75,7 +76,7 @@ public class Benchmarking {
 	
 	public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 	
-	public static final String[] eqMethodsAvailable = {"w" , "wp", "hsi", "h", "spy", "spyh"};
+	public static final String[] eqMethodsAvailable = {"w" , "wp", "soucha_hsi", "soucha_h", "soucha_spy", "soucha_spyh"};
 	public static final String[] closingStrategiesAvailable = {"CloseFirst" , "CloseShortest"};
 	private static final String RIVEST_SCHAPIRE_ALLSUFFIXES = "RivestSchapireAllSuffixes";
 	public static final String[] cexHandlersAvailable = {"ClassicLStar" , "MalerPnueli", "RivestSchapire", RIVEST_SCHAPIRE_ALLSUFFIXES, "Shahbaz", "Suffix1by1"};
@@ -243,9 +244,9 @@ public class Benchmarking {
 		
 		EquivalenceOracle<MealyMachine<?, String, ?, String>, String, Word<String>> eqOracle;
 		switch (ctt_name) {
-		case "soucha_wp":
-			eqOracle = new SouchaCTT(oracleForEQoracle,"wp", extra_states);
-			logger.logEvent("EquivalenceOracle: SouchaCTT(wp,"+extra_states+")");
+		case "wp":
+			eqOracle = new WpMethodEQOracle<>(oracleForEQoracle, extra_states);
+			logger.logEvent("EquivalenceOracle: WpMethodEQOracle("+extra_states+")");
 			break;
 		case "soucha_h":
 			eqOracle = new SouchaCTT(oracleForEQoracle,"h",extra_states);
@@ -263,9 +264,9 @@ public class Benchmarking {
 			eqOracle = new SouchaCTT(oracleForEQoracle,"spyh",extra_states);
 			logger.logEvent("EquivalenceOracle: SouchaCTT(spyh,"+extra_states+")");
 			break;
-		case "soucha_w":
-			eqOracle = new SouchaCTT(oracleForEQoracle,"w",extra_states);
-			logger.logEvent("EquivalenceOracle: SouchaCTT(w,"+extra_states+")");
+		case "w":
+			eqOracle = new WMethodEQOracle<>(oracleForEQoracle, extra_states);
+			logger.logEvent("EquivalenceOracle: WMethodEQOracle("+extra_states+")");
 			break;
 		default:
 			eqOracle = new WMethodEQOracle<>(oracleForEQoracle, extra_states);
