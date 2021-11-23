@@ -270,7 +270,7 @@ public class Benchmarking {
 			break;
 		default:
 			eqOracle = new WMethodEQOracle<>(oracleForEQoracle, extra_states);
-			logger.logEvent("EquivalenceOracle: WMethodQsizeEQOracle("+extra_states+")");
+			logger.logEvent("EquivalenceOracle: WMethodEQOracle("+extra_states+")");
 			break;
 		}
 		return eqOracle;
