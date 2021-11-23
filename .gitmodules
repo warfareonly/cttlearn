@@ -4,4 +4,4 @@
 	branch = testing_methods
 [submodule "data/automata_wiki"]
 	path = data/automata_wiki
-	url = git@github.com:damascenodiego/automata_wiki.git
+	url = https://github.com/damascenodiego/automata_wiki.git
