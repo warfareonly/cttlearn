@@ -27,7 +27,7 @@ public class EQWrapperHypSize<I, O> implements MealyEquivalenceOracle<I, O> {
 
 	@Override
 	public @Nullable DefaultQuery<I, Word<O>> findCounterExample(MealyMachine<?, I, ?, O> hypothesis, Collection<? extends I> inputs) {
-		String log_formatted = String.format("{Iteration=%d;HypothesisSize=%d;}", iteration_num,hypothesis.size());
+		String log_formatted = String.format("EQWrapperHypSize: {Iteration=%d;HypothesisSize=%d;}", iteration_num,hypothesis.size());
 		LOGGER.logEvent(log_formatted);
 		iteration_num++;
 		return this.eq_oracle.findCounterExample(hypothesis, inputs);
