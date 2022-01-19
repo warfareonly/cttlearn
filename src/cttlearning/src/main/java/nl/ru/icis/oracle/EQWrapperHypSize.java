@@ -15,7 +15,7 @@ public class EQWrapperHypSize<I, O> implements MealyEquivalenceOracle<I, O> {
 	
 	private final LearnLogger LOGGER = LearnLogger.getLogger(EQWrapperHypSize.class);
 	private MealyEquivalenceOracle<I, O> eqOracle;
-	private int iterationNum = 1; 
+	private int iterationNum = 0; 
 	
 	public EQWrapperHypSize(MealyEquivalenceOracle<I, O> oracle) {
 		this.eqOracle = oracle;
@@ -27,12 +27,14 @@ public class EQWrapperHypSize<I, O> implements MealyEquivalenceOracle<I, O> {
 
 	@Override
 	public @Nullable DefaultQuery<I, Word<O>> findCounterExample(MealyMachine<?, I, ?, O> hypothesis, Collection<? extends I> inputs) {
-		LOGGER.logEvent(String.format("EqOIteration:%d", iterationNum));
-		LOGGER.logEvent(String.format("EqOHypSize:%d", hypothesis.size()));
-		iterationNum++;
-		
+		int qry_size = 0;
+
 		DefaultQuery<I, Word<O>> qryToReturn = this.eqOracle.findCounterExample(hypothesis, inputs);
-		LOGGER.logEvent(String.format("EqOCE:%s", String.valueOf(qryToReturn)));
+		if(qryToReturn != null) {
+			qry_size = qryToReturn.getInput().size();
+		}
+		iterationNum++;
+		LOGGER.logEvent(String.format("EQStats:{'Iter':%d,'HypSize':%d,'CESize':%d}", iterationNum, hypothesis.size(), qry_size));
 		return qryToReturn;
 	}
 
