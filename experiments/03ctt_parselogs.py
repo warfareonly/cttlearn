@@ -45,10 +45,10 @@ stats_iter = {
 
 for cttl_log in glob.glob(os.path.join(results_path, "*.log")):
 
-     line = "xxx"
      with open(cttl_log) as cttl_f:
           tmp_stats = {k:np.nan for k in stats_overall.keys()}
           tmp_iter  = []
+          line = cttl_f.readline()
           while line:
                line = cttl_f.readline()
                m = P_LOG.match(line)
@@ -62,19 +62,14 @@ for cttl_log in glob.glob(os.path.join(results_path, "*.log")):
                if m_dict['key'] == 'EQStats':
                     try:
                          d_stats = ast.literal_eval(m_dict['val'])
-                         tmp_iter.append(d_stats)
+                         for k,v in stats_iter.items():
+                              if k in d_stats.keys(): continue
+                              d_stats[k]=tmp_stats[k]
+                         for k,v in d_stats.items():
+                              stats_iter[k].append(v)
                     finally: pass
 
           for k, v in stats_overall.items(): v.append(tmp_stats[k])
-
-          if not type(tmp_stats["Rounds"]) is str: continue
-          rounds_int = int(tmp_stats["Rounds"])
-          for entry in tmp_iter:
-               for k,v in entry.items(): stats_iter[k].append(v)
-          for k in stats_iter.keys():
-               if k in ["Iter","HypSize","CESize"]: continue
-               stats_iter[k].extend([tmp_stats[k]] * rounds_int)
-
 
 df_overall = pd.DataFrame.from_dict(stats_overall)
 df_overall.to_csv(os.path.join('df_overall.csv'), index = False)
