@@ -21,17 +21,7 @@
 		</encoder>
 	</appender>
     
-	<logger name="de.learnlib.util.Experiment" level="DEBUG">
-		<appender-ref ref="fout" />
-		<!-- <appender-ref ref="stdout" /> -->
-	</logger>
 	<logger name="de.learnlib.util.statistics.SimpleProfiler" level="DEBUG">
-		<appender-ref ref="fout" />
-	</logger>
-	<logger name="de.learnlib.util.statistics.SimpleProfiler" level="DEBUG">
-		 <appender-ref ref="fout" />
-	</logger>
-	<logger name="de.learnlib.util.ExperimentDebug" level="DEBUG">
 		 <appender-ref ref="fout" />
 	</logger>
 	<logger name="nl.ru.icis.Benchmarking" level="DEBUG">
