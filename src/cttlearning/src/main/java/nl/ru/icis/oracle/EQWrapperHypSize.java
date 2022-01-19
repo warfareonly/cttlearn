@@ -15,7 +15,7 @@ public class EQWrapperHypSize<I, O> implements MealyEquivalenceOracle<I, O> {
 	
 	private final LearnLogger LOGGER = LearnLogger.getLogger(EQWrapperHypSize.class);
 	private MealyEquivalenceOracle<I, O> eq_oracle;
-	private int iteration_num = 0; 
+	private int iteration_num = 1; 
 	
 	public EQWrapperHypSize(MealyEquivalenceOracle<I, O> oracle) {
 		this.eq_oracle = oracle;
