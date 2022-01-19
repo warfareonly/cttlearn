@@ -27,12 +27,12 @@ public class EQWrapperHypSize<I, O> implements MealyEquivalenceOracle<I, O> {
 
 	@Override
 	public @Nullable DefaultQuery<I, Word<O>> findCounterExample(MealyMachine<?, I, ?, O> hypothesis, Collection<? extends I> inputs) {
-		LOGGER.logEvent(String.format("EqOIteration=%d", iterationNum));
-		LOGGER.logEvent(String.format("EqOHypSize=%d", hypothesis.size()));
+		LOGGER.logEvent(String.format("EqOIteration:%d", iterationNum));
+		LOGGER.logEvent(String.format("EqOHypSize:%d", hypothesis.size()));
 		iterationNum++;
 		
 		DefaultQuery<I, Word<O>> qryToReturn = this.eqOracle.findCounterExample(hypothesis, inputs);
-		LOGGER.logEvent(String.format("EqOCE=%s", String.valueOf(qryToReturn)));
+		LOGGER.logEvent(String.format("EqOCE:%s", String.valueOf(qryToReturn)));
 		return qryToReturn;
 	}
 
