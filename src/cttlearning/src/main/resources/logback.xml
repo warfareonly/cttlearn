@@ -27,22 +27,20 @@
 	</logger>
 	<logger name="de.learnlib.util.statistics.SimpleProfiler" level="DEBUG">
 		<appender-ref ref="fout" />
-		<!-- <appender-ref ref="stdout" /> -->
 	</logger>
 	<logger name="de.learnlib.util.statistics.SimpleProfiler" level="DEBUG">
 		 <appender-ref ref="fout" />
-		 <!-- <appender-ref ref="stdout" /> -->
 	</logger>
 	<logger name="de.learnlib.util.ExperimentDebug" level="DEBUG">
 		 <appender-ref ref="fout" />
-		 <!-- <appender-ref ref="stdout" /> -->
 	</logger>
 	<logger name="nl.ru.icis.Benchmarking" level="DEBUG">
 		<appender-ref ref="fout" />
-		<!-- <appender-ref ref="stdout" /> -->
 	</logger>
 	<logger name="nl.ru.icis.oracle.SouchaCTT" level="DEBUG">
 		<appender-ref ref="fout" />
-		<!-- <appender-ref ref="stdout" /> -->
+	</logger>
+	<logger name="nl.ru.icis.oracle.EQWrapperHypSize" level="DEBUG">
+		<appender-ref ref="fout" />
 	</logger>
 </configuration>

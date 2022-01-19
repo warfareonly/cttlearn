@@ -99,13 +99,12 @@ public class SouchaCTT<I, O> implements MealyEquivalenceOracle<I, O> {
 
 	private <S, T> DefaultQuery<I, Word<O>> doFindCounterExample(MealyMachine<S, I, T, O> hypothesis, Collection<? extends I> inputs) {
 
-		String soucha_fsm = print_mealy_in_soucha_format(hypothesis, inputs);
-		LOGGER.logEvent("EquivalenceOracle: SouchaCTT: {Hypothesis_size=" + hypothesis.getStates().size() + ";}");
 		if (inputs.isEmpty()) {
 			LOGGER.warn("Passed empty set of inputs to equivalence oracle; no counterexample can be found!");
 			return null;
 		}
-
+		String soucha_fsm = print_mealy_in_soucha_format(hypothesis, inputs);
+		
 		try {
 			Process process = Runtime.getRuntime().exec("../src/fsm_lib -m " + this.conformanceTesting + " -es " + this.extraStates);
 			BufferedReader proc_in = new BufferedReader(new InputStreamReader(process.getInputStream()));

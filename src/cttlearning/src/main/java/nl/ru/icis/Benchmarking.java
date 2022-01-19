@@ -4,14 +4,11 @@
 package nl.ru.icis;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.FileHandler;
-import java.util.logging.SimpleFormatter;
 
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.CommandLine;
@@ -36,6 +33,8 @@ import de.learnlib.driver.util.MealySimulatorSUL;
 import de.learnlib.filter.cache.sul.SULCache;
 import de.learnlib.filter.statistic.sul.ResetCounterSUL;
 import de.learnlib.filter.statistic.sul.SymbolCounterSUL;
+import de.learnlib.oracle.equivalence.MealyWMethodEQOracle;
+import de.learnlib.oracle.equivalence.MealyWpMethodEQOracle;
 import de.learnlib.oracle.equivalence.WMethodEQOracle;
 import de.learnlib.oracle.equivalence.WpMethodEQOracle;
 import de.learnlib.oracle.membership.SULOracle;
@@ -45,11 +44,9 @@ import net.automatalib.automata.transducers.MealyMachine;
 import net.automatalib.automata.transducers.impl.compact.CompactMealy;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
-import net.automatalib.serialization.dot.DOTSerializationProvider;
-import net.automatalib.serialization.dot.GraphDOT;
-import net.automatalib.serialization.learnlibv2.LearnLibV2Serialization;
 import net.automatalib.util.automata.Automata;
 import net.automatalib.words.Word;
+import nl.ru.icis.oracle.EQWrapperHypSize;
 import nl.ru.icis.oracle.SouchaCTT;
 
 /**
@@ -168,6 +165,9 @@ public class Benchmarking {
 			
 			MembershipOracle<String, String>       mqOracle = new SULOracle(mq_sul);
 			EquivalenceOracle<MealyMachine<?, String, ?, String>, String, Word<String>> eqOracle = buildEqOracle(rnd_seed, ctt_name, extra_states, logger, eq_sul);
+			
+			// Wrapper to log the hypothesis size for every EQOracle call
+			eqOracle = new EQWrapperHypSize(eqOracle);
 
 			/////////////////////////////
 			// Setup experiment object //
@@ -245,7 +245,7 @@ public class Benchmarking {
 		EquivalenceOracle<MealyMachine<?, String, ?, String>, String, Word<String>> eqOracle;
 		switch (ctt_name) {
 		case "wp":
-			eqOracle = new WpMethodEQOracle<>(oracleForEQoracle, extra_states);
+			eqOracle = new MealyWpMethodEQOracle<>(oracleForEQoracle, extra_states);
 			logger.logEvent("EquivalenceOracle: WpMethodEQOracle("+extra_states+")");
 			break;
 		case "soucha_h":
@@ -265,11 +265,11 @@ public class Benchmarking {
 			logger.logEvent("EquivalenceOracle: SouchaCTT(spyh,"+extra_states+")");
 			break;
 		case "w":
-			eqOracle = new WMethodEQOracle<>(oracleForEQoracle, extra_states);
+			eqOracle = new MealyWMethodEQOracle<>(oracleForEQoracle, extra_states);
 			logger.logEvent("EquivalenceOracle: WMethodEQOracle("+extra_states+")");
 			break;
 		default:
-			eqOracle = new WMethodEQOracle<>(oracleForEQoracle, extra_states);
+			eqOracle = new MealyWMethodEQOracle<>(oracleForEQoracle, extra_states);
 			logger.logEvent("EquivalenceOracle: WMethodEQOracle("+extra_states+")");
 			break;
 		}
