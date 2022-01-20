@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import ast
 
-P_LOG = re.compile(r"([0-9]+-[0-9]+-[0-9\.]+ [0-9]+:[0-9]+:[0-9\.]+) (?P<lvl>[\w]+)\s*(?P<clz>\w+)\s*\|(?P<key>[^:]+):\s*(?P<val>\S+)")
+P_LOG = re.compile(r"([0-9]+-[0-9]+-[0-9\.]+ [0-9]+:[0-9]+:[0-9\.]+) (?P<lvl>[\w]+)\s*(?P<clz>\w+)\s*\|(?P<key>[^:]+):\s*(?P<val>.+)")
 results_path = "./logs/"
 
 logs_dict = {}
@@ -38,10 +38,10 @@ stats_iter = {
      "Cache" : [],
      "EquivalenceOracle" : [],
      "Method" : [],
-     "Info" : [],
      "Iter" : [],
      "HypSize" : [],
      "CESize" : [],
+     "Info" : [],
      }
 
 for cttl_log in glob.glob(os.path.join(results_path, "*.log")):
