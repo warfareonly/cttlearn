@@ -50,6 +50,7 @@ for cttl_log in glob.glob(os.path.join(results_path, "*.log")):
           with open(cttl_log) as cttl_f:
                tmp_stats = {k:np.nan for k in stats_overall.keys()}
                tmp_iter  = []
+               counter_EQStats = 0
                line = 'to_start_iteration'
                while line:
                     line = cttl_f.readline()
@@ -64,6 +65,7 @@ for cttl_log in glob.glob(os.path.join(results_path, "*.log")):
                     if m_dict['key'] == 'EQStats':
                          try:
                               d_stats = ast.literal_eval(m_dict['val'])
+                              counter_EQStats+=1
                               for k,v in stats_iter.items():
                                    if k in d_stats.keys(): continue
                                    if k in ['Info']: continue
@@ -72,9 +74,10 @@ for cttl_log in glob.glob(os.path.join(results_path, "*.log")):
                                    stats_iter[k].append(v)
                          finally: pass
                     if m_dict['key'] == 'Info':
-                         stats_iter['Info'].extend([m_dict["val"]]* int(tmp_stats["Rounds"]))
+                         stats_iter['Info'].extend([m_dict["val"]]* counter_EQStats)
 
-               for k, v in stats_overall.items(): v.append(tmp_stats[k])
+               for k, v in stats_overall.items():
+                    v.append(tmp_stats[k])
      except:
           print(f"Could not read file: {cttl_log}")
 
