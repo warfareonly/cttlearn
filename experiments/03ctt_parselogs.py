@@ -38,6 +38,7 @@ stats_iter = {
      "Cache" : [],
      "EquivalenceOracle" : [],
      "Method" : [],
+     "Info" : [],
      "Iter" : [],
      "HypSize" : [],
      "CESize" : [],
@@ -45,31 +46,37 @@ stats_iter = {
 
 for cttl_log in glob.glob(os.path.join(results_path, "*.log")):
 
-     with open(cttl_log) as cttl_f:
-          tmp_stats = {k:np.nan for k in stats_overall.keys()}
-          tmp_iter  = []
-          line = 'to_start_iteration'
-          while line:
-               line = cttl_f.readline()
-               m = P_LOG.match(line)
-               if m is None: continue
+     try:
+          with open(cttl_log) as cttl_f:
+               tmp_stats = {k:np.nan for k in stats_overall.keys()}
+               tmp_iter  = []
+               line = 'to_start_iteration'
+               while line:
+                    line = cttl_f.readline()
+                    m = P_LOG.match(line)
+                    if m is None: continue
 
-               m_dict = m.groupdict()
-               if len(m_dict) == 0: continue
+                    m_dict = m.groupdict()
+                    if len(m_dict) == 0: continue
 
-               if m_dict['key'] in stats_overall.keys(): tmp_stats[m_dict['key']] = m_dict["val"]
+                    if m_dict['key'] in stats_overall.keys(): tmp_stats[m_dict['key']] = m_dict["val"]
 
-               if m_dict['key'] == 'EQStats':
-                    try:
-                         d_stats = ast.literal_eval(m_dict['val'])
-                         for k,v in stats_iter.items():
-                              if k in d_stats.keys(): continue
-                              d_stats[k]=tmp_stats[k]
-                         for k,v in d_stats.items():
-                              stats_iter[k].append(v)
-                    finally: pass
+                    if m_dict['key'] == 'EQStats':
+                         try:
+                              d_stats = ast.literal_eval(m_dict['val'])
+                              for k,v in stats_iter.items():
+                                   if k in d_stats.keys(): continue
+                                   if k in ['Info']: continue
+                                   d_stats[k]=tmp_stats[k]
+                              for k,v in d_stats.items():
+                                   stats_iter[k].append(v)
+                         finally: pass
+                    if m_dict['key'] == 'Info':
+                         stats_iter['Info'].extend([m_dict["val"]]* int(tmp_stats["Rounds"]))
 
-          for k, v in stats_overall.items(): v.append(tmp_stats[k])
+               for k, v in stats_overall.items(): v.append(tmp_stats[k])
+     except:
+          print(f"Could not read file: {cttl_log}")
 
 df_overall = pd.DataFrame.from_dict(stats_overall)
 df_overall.to_csv(os.path.join('df_overall.csv'), index = False)
