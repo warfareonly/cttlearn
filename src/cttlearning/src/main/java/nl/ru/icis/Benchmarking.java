@@ -246,7 +246,7 @@ public class Benchmarking {
 		switch (ctt_name) {
 		case "wp":
 			eqOracle = new MealyWpMethodEQOracle<>(oracleForEQoracle, extra_states);
-			logger.logEvent("EquivalenceOracle: WpMethodEQOracle("+extra_states+")");
+			logger.logEvent("EquivalenceOracle: LearnlibEQOracle(wp,"+extra_states+")");
 			break;
 		case "soucha_h":
 			eqOracle = new SouchaCTT(oracleForEQoracle,"h",extra_states);
@@ -266,11 +266,11 @@ public class Benchmarking {
 			break;
 		case "w":
 			eqOracle = new MealyWMethodEQOracle<>(oracleForEQoracle, extra_states);
-			logger.logEvent("EquivalenceOracle: WMethodEQOracle("+extra_states+")");
+			logger.logEvent("EquivalenceOracle: LearnlibEQOracle(w,"+extra_states+")");
 			break;
 		default:
 			eqOracle = new MealyWMethodEQOracle<>(oracleForEQoracle, extra_states);
-			logger.logEvent("EquivalenceOracle: WMethodEQOracle("+extra_states+")");
+			logger.logEvent("EquivalenceOracle: LearnlibEQOracle(w,"+extra_states+")");
 			break;
 		}
 		return eqOracle;
