@@ -48,7 +48,7 @@ for cttl_log in glob.glob(os.path.join(results_path, "*.log")):
      with open(cttl_log) as cttl_f:
           tmp_stats = {k:np.nan for k in stats_overall.keys()}
           tmp_iter  = []
-          line = cttl_f.readline()
+          line = 'to_start_iteration'
           while line:
                line = cttl_f.readline()
                m = P_LOG.match(line)
