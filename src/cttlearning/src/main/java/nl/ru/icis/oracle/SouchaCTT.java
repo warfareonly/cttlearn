@@ -20,6 +20,7 @@ import de.learnlib.api.logging.LearnLogger;
 import de.learnlib.api.oracle.EquivalenceOracle.MealyEquivalenceOracle;
 import de.learnlib.api.oracle.MembershipOracle.MealyMembershipOracle;
 import de.learnlib.api.query.DefaultQuery;
+import de.learnlib.oracle.equivalence.MealyCompleteExplorationEQOracle;
 import net.automatalib.automata.transducers.MealyMachine;
 import net.automatalib.automata.transducers.impl.compact.CompactMealy;
 import net.automatalib.words.Word;
@@ -61,9 +62,9 @@ public class SouchaCTT<I, O> implements MealyEquivalenceOracle<I, O> {
 	private final int extraStates;
 
 	/**
-	 * Runtime class
+	 * EQ Oracle for testing single-state FSM model
 	 */
-	private final Runtime rt;
+	private MealyCompleteExplorationEQOracle<I,O> completeExploration;
 
 	public static final String CTT_Wp = "wp";
 	public static final String CTT_W = "w";
@@ -80,7 +81,7 @@ public class SouchaCTT<I, O> implements MealyEquivalenceOracle<I, O> {
 		this.sul = sul;
 		this.conformanceTesting = ctt_name;
 		this.extraStates = extra_states;
-		this.rt = Runtime.getRuntime();
+		this.completeExploration = new MealyCompleteExplorationEQOracle<I,O>(sul, 1+extra_states); // |I| + extra states 
 		LOGGER.logEvent("EquivalenceOracle: SouchaCTT: {Technique=" + this.conformanceTesting + ";ExtraStates=" + this.extraStates + ";}");
 	}
 
@@ -103,6 +104,11 @@ public class SouchaCTT<I, O> implements MealyEquivalenceOracle<I, O> {
 			LOGGER.warn("Passed empty set of inputs to equivalence oracle; no counterexample can be found!");
 			return null;
 		}
+		
+		if(hypothesis.size()==1) {
+			return this.completeExploration.findCounterExample(hypothesis, inputs);
+		}
+		
 		String soucha_fsm = print_mealy_in_soucha_format(hypothesis, inputs);
 		
 		try {
@@ -218,9 +224,9 @@ public class SouchaCTT<I, O> implements MealyEquivalenceOracle<I, O> {
 
 	}
 
-	private Word stringToWord(String in_str, Collection<? extends I> inputs) {
+	private Word<I> stringToWord(String in_str, Collection<? extends I> inputs) {
 		List<? extends I> inputs_list = new ArrayList<>(inputs);
-		Word in_word = Word.epsilon();
+		Word<I> in_word = Word.epsilon();
 		Matcher in_matcher = PATTERN_TC.matcher(in_str);
 		if (in_matcher.matches()) {
 			String result = in_matcher.group("tc");
