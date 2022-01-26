@@ -8,3 +8,6 @@
 [submodule "src/lsharp"]
 	path = src/lsharp
 	url = https://gitlab.science.ru.nl/sws/lsharp.git
+[submodule "src/hybrid-ads"]
+	path = src/hybrid-ads
+	url = https://gitlab.science.ru.nl/bharat/hybrid-ads.git
