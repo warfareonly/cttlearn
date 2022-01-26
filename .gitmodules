@@ -5,3 +5,6 @@
 [submodule "data/automata_wiki"]
 	path = data/automata_wiki
 	url = https://github.com/damascenodiego/automata_wiki.git
+[submodule "src/lsharp"]
+	path = src/lsharp
+	url = https://gitlab.science.ru.nl/sws/lsharp.git
