@@ -13,3 +13,18 @@ cd FSMlib
 make -j8 all
 cp ./build/fsm_lib ../fsm_lib
 echo "Commpilation finished: FSMlib"
+cd ..
+
+echo "Compiling L#"
+cd lsharp
+cargo build --release
+cp ./target/release/lsharp-ru ../.
+cd ..
+
+echo "Compiling Hybrid-ADS"
+cd hybrid-ads
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+make -j8
+cd ..
