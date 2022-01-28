@@ -37,10 +37,10 @@ public class YannakakisCTT<I, O> implements MealyEquivalenceOracle<I, O> {
      * @param sulOracle The membership oracle of the SUL, we need this to check the output on the test suite
      * @throws IOException
      */
-    YannakakisCTT(Integer extraStates, MealyMembershipOracle<I, O> sulOracle) throws IOException {
+    public YannakakisCTT(Integer extraStates, MealyMembershipOracle<I, O> sulOracle) throws IOException {
         this.sulOracle = sulOracle;
         this.extraStates = extraStates;
-        this.pb = new ProcessBuilder("../hybrid-ads/main", "--prefix", "minimal", "-m", "fixed", "-l", extraStates.toString());
+        this.pb = new ProcessBuilder("../src/hybrid-ads/build/main", "-p", "lexmin", "-m", "fixed", "-l", extraStates.toString(), "-k", extraStates.toString());
     }
 
     /**
