@@ -1,23 +1,22 @@
 <configuration>
- 
-	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} |%msg%n</pattern>
-		</encoder>
-		<target>
-			System.out
-		</target>
-	</appender>
- 
+	
 	# File appender
 	<timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmssSSS" timeReference="contextBirth"/>
 	<appender name="fout" class="ch.qos.logback.core.FileAppender">
 		# Name of a log file
 		<file>${logdir:-logs}/${logname:-logback}_${logtstamp:-${bySecond}}.log</file>
 		<append>false</append>
-		<encoder>
+		<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
 			# Pattern of log message for file appender
 			<pattern>%d{yyyy-MM-dd HH:mm:ss} %p %logger{0} |%m%n</pattern>
+			<layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                <timestampFormat>yyyy-MM-dd'T'HH:mm:ss.SSSX</timestampFormat>
+                <timestampFormatTimezoneId>Etc/UTC</timestampFormatTimezoneId>
+
+                <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                    <prettyPrint>true</prettyPrint>
+                </jsonFormatter>
+            </layout>
 		</encoder>
 	</appender>
     
