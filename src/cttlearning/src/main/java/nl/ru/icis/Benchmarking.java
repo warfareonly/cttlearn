@@ -171,6 +171,11 @@ public class Benchmarking {
 
             // Wrapper to log the hypothesis size for every EQOracle call
             eqOracle = new EQWrapperHypSize(eqOracle);
+            
+            ((EQWrapperHypSize)eqOracle).addStatisticsSUL("EQSymbol", eq_sym);
+            ((EQWrapperHypSize)eqOracle).addStatisticsSUL("EQReset", eq_rst);
+            ((EQWrapperHypSize)eqOracle).addStatisticsSUL("MQSymbol", mq_sym);
+            ((EQWrapperHypSize)eqOracle).addStatisticsSUL("MQReset", mq_rst);
 
             /////////////////////////////
             // Setup experiment object //
