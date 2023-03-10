@@ -39,6 +39,10 @@ def derive_data(data_frame: pd.DataFrame.dtypes):
     # first, copy dataframe
     df = data_frame.copy()
     
+    # rename soucha CTTs and set CTTs as Categorical data 
+    df['CTT'] = df['CTT'].str.replace('Soucha','')
+    df['CTT'] = pd.Categorical(df['CTT'], ["W", "Wp", "Hsi", "SPY", "SPYH", "HadsInt"])
+    
     # ... split queries/symbols into different columns
     for qtype in ["Learning", "Testing"]:
         _lst= df[f"{qtype} queries/symbols"].apply(lambda x: [i.split('/') for i in ast.literal_eval(x)])
@@ -49,6 +53,9 @@ def derive_data(data_frame: pd.DataFrame.dtypes):
     df["HypSize"] = df["HypSize"].apply(lambda x: ast.literal_eval(x)) 
     df["TQ [Symbols]"] = df["EQ [Symbols]"]+df["MQ [Symbols]"]
     df["TQ [Resets]"] = df["EQ [Resets]"]+df["MQ [Resets]"]
+    df["TQ"] = df["TQ [Symbols]"]+df["TQ [Resets]"]
+    df["MQ"] = df["MQ [Symbols]"]+df["MQ [Resets]"]
+    df["EQ"] = df["EQ [Symbols]"]+df["EQ [Resets]"]
 
     # ... and then append qSize to HypSize, if the run is successfull 
     df["HypSize"] = df.apply(lambda x: x.HypSize + [x.Qsize] if x.Equivalent=='OK' and len(x.HypSize) < x.Rounds else x.HypSize, axis=1)
@@ -177,3 +184,39 @@ def VD_A_DF(data, val_col: str = None, group_col: str = None, sort=True):
         'estimate': ef[:, 0],
         'magnitude': ef[:, 1]
     })
+
+def sort_vda(df_vda):
+    df_vda.estimate = df_vda.estimate.astype(float)
+    df_vda['estimate_abs'] = np.abs(df_vda.estimate.astype(float)-0.5)
+    df_vda.magnitude = df_vda.apply(lambda x: x['magnitude'] + (f'(A)' if x['estimate']<0.5 else f'(B)'), axis=1)
+    return df_vda[['A','B','estimate','magnitude']].set_index(['A','B'])
+
+def _f_s12(x,max_vals):
+    d = {}
+    d['SUL name'] = x.apply(lambda x: x['SUL name'],axis=1).tolist()
+    d['TQ_s1'] = x.apply(lambda x: x['TQ'],axis=1).tolist()
+    d['TQ_s2'] = x.apply(lambda x: x['TQ']/max_vals['TQ_max'][x['SUL name']],axis=1).tolist()
+    
+    d['APFDx_s1'] = x.apply(lambda x: x['APFDx'],axis=1).tolist()
+    d['APFDx_s2'] = x.apply(lambda x: x['APFDx']/max_vals['APFDx_max'][x['SUL name']],axis=1).tolist()
+    
+    return pd.Series(d, index=['SUL name', 'TQ_s1', 'APFDx_s1', 'TQ_s2', 'APFDx_s2'])
+    #d['TQ_Resets_s1'] = x.apply(lambda x: x['TQ [Resets]'],axis=1).tolist()
+    #d['TQ_Resets_s2'] = x.apply(lambda x: x['TQ [Resets]']/max_vals['TQ_Resets_max'][x['SUL name']],axis=1).tolist()
+    #d['TQ_Symbols_s1'] = x.apply(lambda x: x['TQ [Symbols]'],axis=1).tolist()
+    #d['TQ_Symbols_s2'] = x.apply(lambda x: x['TQ [Symbols]']/max_vals['TQ_Symbols_max'][x['SUL name']],axis=1).tolist()
+    #return pd.Series(d, index=['SUL name', 'TQ_s1', 'TQ_Resets_s1', 'TQ_Symbols_s1', 'APFDx_s1', 'TQ_s2', 'TQ_Resets_s2', 'TQ_Symbols_s2', 'APFDx_s2'])
+    
+def _f_max(x):
+    d = {}
+    d['TQ_max'] = x['TQ'].max()
+    d['TQ_Resets_max'] = x['TQ [Resets]'].max()
+    d['TQ_Symbols_max'] = x['TQ [Symbols]'].max()
+    d['APFDx_max'] = x['APFDx'].max()
+    return pd.Series(d, index=['TQ_max', 'TQ_Symbols_max', 'TQ_Resets_max', 'APFDx_max'])
+
+def calc_s12(a_df):
+    max_vals = a_df.groupby('SUL name').apply(lambda x: _f_max(x)).to_dict()
+    metrics_s12 = a_df.groupby('EquivalenceOracle').apply(lambda x: _f_s12(x,max_vals)).explode(['SUL name', 
+                  'TQ_s1', 'TQ_s2', 'APFDx_s1',  'APFDx_s2']).reset_index().set_index(['EquivalenceOracle'])
+    return metrics_s12
