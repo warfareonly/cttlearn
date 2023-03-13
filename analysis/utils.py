@@ -72,13 +72,13 @@ def derive_data(data_frame: pd.DataFrame.dtypes):
     df_eq = df.query('`Equivalent`=="OK"')
     
     the_cols = ["SUL name","Seed","TQ [Symbols]","EQ [Symbols]"]
-    max_eqs = df[the_cols].groupby(["SUL name","Seed"]).max().to_dict()
+    max_eqs = df[the_cols].groupby(["SUL name"]).max().to_dict()
 
     #df["APFD_testing"] = df.apply(lambda x: apfd(x['Testing symbols'],x['HypSize']) if x.Equivalent=='OK' else -1, axis=1)
     #df["APFD_total"] = df.apply(lambda x: apfd(x['Total symbols'],x['HypSize']) if x.Equivalent=='OK' else -1, axis=1)
     
-    #df["APFDx_testing"] = df.apply(lambda x: apfd(x['Testing symbols'],x['HypSize'],max_nqueries=max_eqs['EQ [Symbols]'][(x['SUL name'],x['Seed'])]) if x.Equivalent=='OK' else -1, axis=1)
-    df["APFDx"] = df.apply(lambda x: apfd(x['Total symbols'],x['HypSize'],max_nqueries=max_eqs['TQ [Symbols]'][(x['SUL name'],x['Seed'])]) if x.Equivalent=='OK' else -1, axis=1)
+    #df["APFD_testing"] = df.apply(lambda x: apfd(x['Testing symbols'],x['HypSize'],max_nqueries=max_eqs['EQ [Symbols]'][(x['SUL name'],x['Seed'])]) if x.Equivalent=='OK' else -1, axis=1)
+    df["APFD"] = df.apply(lambda x: apfd(x['Total symbols'],x['HypSize'],max_nqueries=max_eqs['TQ [Symbols]'][(x['SUL name'])]) if x.Equivalent=='OK' else -1, axis=1)
     
     #df["AUC_testing"] = df.apply(lambda x: auc_learning(x['Testing symbols'],x['HypSize'],max_nqueries=max_eqs['EQ [Symbols]'][x['SUL name']]) if x.Equivalent=='OK' else -1, axis=1)
     #df["AUC_total"] = df.apply(lambda x: auc_learning(x['Total symbols'],x['HypSize'],max_nqueries=max_eqs['TQ [Symbols]'][x['SUL name']]) if x.Equivalent=='OK' else -1, axis=1)
@@ -197,26 +197,79 @@ def _f_s12(x,max_vals):
     d['TQ_s1'] = x.apply(lambda x: x['TQ'],axis=1).tolist()
     d['TQ_s2'] = x.apply(lambda x: x['TQ']/max_vals['TQ_max'][x['SUL name']],axis=1).tolist()
     
-    d['APFDx_s1'] = x.apply(lambda x: x['APFDx'],axis=1).tolist()
-    d['APFDx_s2'] = x.apply(lambda x: x['APFDx']/max_vals['APFDx_max'][x['SUL name']],axis=1).tolist()
+    d['APFD_s1'] = x.apply(lambda x: x['APFD'],axis=1).tolist()
+    d['APFD_s2'] = x.apply(lambda x: x['APFD']/max_vals['APFD_max'][x['SUL name']],axis=1).tolist()
     
-    return pd.Series(d, index=['SUL name', 'TQ_s1', 'APFDx_s1', 'TQ_s2', 'APFDx_s2'])
+    return pd.Series(d, index=['SUL name', 'TQ_s1', 'APFD_s1', 'TQ_s2', 'APFD_s2'])
     #d['TQ_Resets_s1'] = x.apply(lambda x: x['TQ [Resets]'],axis=1).tolist()
     #d['TQ_Resets_s2'] = x.apply(lambda x: x['TQ [Resets]']/max_vals['TQ_Resets_max'][x['SUL name']],axis=1).tolist()
     #d['TQ_Symbols_s1'] = x.apply(lambda x: x['TQ [Symbols]'],axis=1).tolist()
     #d['TQ_Symbols_s2'] = x.apply(lambda x: x['TQ [Symbols]']/max_vals['TQ_Symbols_max'][x['SUL name']],axis=1).tolist()
-    #return pd.Series(d, index=['SUL name', 'TQ_s1', 'TQ_Resets_s1', 'TQ_Symbols_s1', 'APFDx_s1', 'TQ_s2', 'TQ_Resets_s2', 'TQ_Symbols_s2', 'APFDx_s2'])
+    #return pd.Series(d, index=['SUL name', 'TQ_s1', 'TQ_Resets_s1', 'TQ_Symbols_s1', 'APFD_s1', 'TQ_s2', 'TQ_Resets_s2', 'TQ_Symbols_s2', 'APFD_s2'])
     
 def _f_max(x):
     d = {}
     d['TQ_max'] = x['TQ'].max()
     d['TQ_Resets_max'] = x['TQ [Resets]'].max()
     d['TQ_Symbols_max'] = x['TQ [Symbols]'].max()
-    d['APFDx_max'] = x['APFDx'].max()
-    return pd.Series(d, index=['TQ_max', 'TQ_Symbols_max', 'TQ_Resets_max', 'APFDx_max'])
+    d['APFD_max'] = x['APFD'].max()
+    return pd.Series(d, index=['TQ_max', 'TQ_Symbols_max', 'TQ_Resets_max', 'APFD_max'])
 
 def calc_s12(a_df):
     max_vals = a_df.groupby('SUL name').apply(lambda x: _f_max(x)).to_dict()
     metrics_s12 = a_df.groupby('EquivalenceOracle').apply(lambda x: _f_s12(x,max_vals)).explode(['SUL name', 
-                  'TQ_s1', 'TQ_s2', 'APFDx_s1',  'APFDx_s2']).reset_index().set_index(['EquivalenceOracle'])
+                  'TQ_s1', 'TQ_s2', 'APFD_s1',  'APFD_s2']).reset_index().set_index(['EquivalenceOracle'])
     return metrics_s12
+
+def cartesian(arrays, out=None):
+    """
+    Generate a Cartesian product of input arrays.
+    Source: https://gist.github.com/hernamesbarbara/68d073f551565de02ac5
+
+    Parameters
+    ----------
+    arrays : list of array-like
+        1-D arrays to form the Cartesian product of.
+    out : ndarray
+        Array to place the Cartesian product in.
+
+    Returns
+    -------
+    out : ndarray
+        2-D array of shape (M, len(arrays)) containing Cartesian products
+        formed of input arrays.
+
+    Examples
+    --------
+    >>> cartesian(([1, 2, 3], [4, 5], [6, 7]))
+    array([[1, 4, 6],
+           [1, 4, 7],
+           [1, 5, 6],
+           [1, 5, 7],
+           [2, 4, 6],
+           [2, 4, 7],
+           [2, 5, 6],
+           [2, 5, 7],
+           [3, 4, 6],
+           [3, 4, 7],
+           [3, 5, 6],
+           [3, 5, 7]])
+
+    """
+
+    arrays = [np.asarray(x) for x in arrays]
+    dtype = arrays[0].dtype
+
+    n = np.prod([x.size for x in arrays])
+    if out is None:
+        out = np.zeros([n, len(arrays)], dtype=dtype)
+
+    #m = n / arrays[0].size
+    m = int(n / arrays[0].size)
+    out[:,0] = np.repeat(arrays[0], m)
+    if arrays[1:]:
+        cartesian(arrays[1:], out=out[0:m, 1:])
+        for j in range(1, arrays[0].size):
+        #for j in xrange(1, arrays[0].size):
+            out[j*m:(j+1)*m, 1:] = out[0:m, 1:]
+    return out
